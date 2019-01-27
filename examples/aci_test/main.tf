@@ -37,7 +37,7 @@ resource "aci_application_profile" "app1" {
 # }
 
 data "aci_vmm_domain" "vds" {
-  provider_profile_dn = "VMware"
+  provider_profile_dn = "/uni/vmmp-VMware"
   name                = "ESX0-leaf103"
 }
 
