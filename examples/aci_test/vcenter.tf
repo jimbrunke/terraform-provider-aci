@@ -15,7 +15,7 @@ data "vsphere_network" "vm1_net" {
 }
 
 data "vsphere_network" "vm2_net" {
-  name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, aci_application_profile.app1.name, aci_application_epg.epg1.name)}"
+  name          = "${format("%v|%v|%v", aci_tenant.terraform_ten.name, aci_application_profile.app1.name, aci_application_epg.epg2.name)}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
@@ -44,8 +44,8 @@ resource "vsphere_virtual_machine" "aci_vm1" {
   name         = "${var.aci_vm1_name}"
   datastore_id = "${data.vsphere_datastore.ds.id}"
 
-  num_cpus = 8
-  memory   = 24576
+  num_cpus = 2
+  memory   = 4096
   guest_id = "${data.vsphere_virtual_machine.template.guest_id}"
 
   #   resource_pool_id = "${data.vsphere_compute_cluster.cl.resource_pool_id}"
@@ -95,8 +95,8 @@ resource "vsphere_virtual_machine" "aci_vm2" {
   resource_pool_id = "${data.vsphere_host.host.resource_pool_id}"
   datastore_id     = "${data.vsphere_datastore.ds.id}"
 
-  num_cpus = 8
-  memory   = 24576
+  num_cpus = 2
+  memory   = 4096
   guest_id = "${data.vsphere_virtual_machine.template.guest_id}"
 
   scsi_type = "${data.vsphere_virtual_machine.template.scsi_type}"
