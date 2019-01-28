@@ -38,6 +38,7 @@ provider "aci" {
   # cisco-aci url
   url      = "https://my-cisco-aci.com"
   insecure = true
+  proxy_url = "https://proxy_server:proxy_port"
 }
 
 resource "aci_tenant" "test-tenant" {
