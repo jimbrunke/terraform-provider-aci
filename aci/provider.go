@@ -47,6 +47,12 @@ func Provider() terraform.ResourceProvider {
 				DefaultFunc: schema.EnvDefaultFunc("ACI_CERT_NAME", nil),
 				Description: "Certificate name for the User in Cisco ACI.",
 			},
+			"proxy_url": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ACI_PROXY_URL", nil),
+				Description: "Proxy Server URL with port number",
+			},
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
@@ -94,6 +100,7 @@ func configureClient(d *schema.ResourceData) (interface{}, error) {
 		IsInsecure: d.Get("insecure").(bool),
 		PrivateKey: d.Get("private_key").(string),
 		Certname:   d.Get("cert_name").(string),
+		ProxyUrl:   d.Get("proxy_url").(string),
 	}
 
 	if err := config.Valid(); err != nil {
@@ -128,11 +135,11 @@ func (c Config) Valid() error {
 func (c Config) getClient() interface{} {
 	if c.Password != "" {
 
-		return client.GetClient(c.URL, c.Username, client.Password(c.Password), client.Insecure(c.IsInsecure))
+		return client.GetClient(c.URL, c.Username, client.Password(c.Password), client.Insecure(c.IsInsecure), client.ProxyUrl(c.ProxyUrl))
 
 	} else {
 
-		return client.GetClient(c.URL, c.Username, client.PrivateKey(c.PrivateKey), client.AdminCert(c.Certname), client.Insecure(c.IsInsecure))
+		return client.GetClient(c.URL, c.Username, client.PrivateKey(c.PrivateKey), client.AdminCert(c.Certname), client.Insecure(c.IsInsecure), client.ProxyUrl(c.ProxyUrl))
 	}
 }
 
@@ -144,4 +151,5 @@ type Config struct {
 	IsInsecure bool
 	PrivateKey string
 	Certname   string
+	ProxyUrl   string
 }
