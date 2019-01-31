@@ -75,7 +75,7 @@ func getRemoteFilter(client *client.Client, dn string) (*models.Filter, error) {
 	vzFilter := models.FilterFromContainer(vzFilterCont)
 
 	if vzFilter.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", vzFilter.DistinguishedName)
+		return nil, fmt.Errorf("Filter %s not found", vzFilter.DistinguishedName)
 	}
 
 	return vzFilter, nil
@@ -221,7 +221,8 @@ func resourceAciFilterRead(d *schema.ResourceData, m interface{}) error {
 	vzFilter, err := getRemoteFilter(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setFilterAttributes(vzFilter, d)
 	return nil

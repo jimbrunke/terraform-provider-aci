@@ -104,7 +104,7 @@ func getRemoteSubnet(client *client.Client, dn string) (*models.Subnet, error) {
 	fvSubnet := models.SubnetFromContainer(fvSubnetCont)
 
 	if fvSubnet.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", fvSubnet.DistinguishedName)
+		return nil, fmt.Errorf("Subnet %s not found", fvSubnet.DistinguishedName)
 	}
 
 	return fvSubnet, nil
@@ -311,7 +311,8 @@ func resourceAciSubnetRead(d *schema.ResourceData, m interface{}) error {
 	fvSubnet, err := getRemoteSubnet(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setSubnetAttributes(fvSubnet, d)
 	return nil

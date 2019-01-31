@@ -111,7 +111,7 @@ func getRemoteContractSubject(client *client.Client, dn string) (*models.Contrac
 	vzSubj := models.ContractSubjectFromContainer(vzSubjCont)
 
 	if vzSubj.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", vzSubj.DistinguishedName)
+		return nil, fmt.Errorf("ContractSubject %s not found", vzSubj.DistinguishedName)
 	}
 
 	return vzSubj, nil
@@ -318,7 +318,8 @@ func resourceAciContractSubjectRead(d *schema.ResourceData, m interface{}) error
 	vzSubj, err := getRemoteContractSubject(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setContractSubjectAttributes(vzSubj, d)
 	return nil

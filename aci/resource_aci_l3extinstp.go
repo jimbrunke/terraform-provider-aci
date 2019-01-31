@@ -176,7 +176,7 @@ func getRemoteExternalNetworkInstanceProfile(client *client.Client, dn string) (
 	l3extInstP := models.ExternalNetworkInstanceProfileFromContainer(l3extInstPCont)
 
 	if l3extInstP.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", l3extInstP.DistinguishedName)
+		return nil, fmt.Errorf("ExternalNetworkInstanceProfile %s not found", l3extInstP.DistinguishedName)
 	}
 
 	return l3extInstP, nil
@@ -604,7 +604,8 @@ func resourceAciExternalNetworkInstanceProfileRead(d *schema.ResourceData, m int
 	l3extInstP, err := getRemoteExternalNetworkInstanceProfile(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setExternalNetworkInstanceProfileAttributes(l3extInstP, d)
 	return nil

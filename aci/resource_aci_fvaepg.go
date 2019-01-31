@@ -241,7 +241,7 @@ func getRemoteApplicationEPG(client *client.Client, dn string) (*models.Applicat
 	fvAEPg := models.ApplicationEPGFromContainer(fvAEPgCont)
 
 	if fvAEPg.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", fvAEPg.DistinguishedName)
+		return nil, fmt.Errorf("ApplicationEPG %s not found", fvAEPg.DistinguishedName)
 	}
 
 	return fvAEPg, nil
@@ -891,7 +891,8 @@ func resourceAciApplicationEPGRead(d *schema.ResourceData, m interface{}) error 
 	fvAEPg, err := getRemoteApplicationEPG(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setApplicationEPGAttributes(fvAEPg, d)
 	return nil

@@ -66,7 +66,7 @@ func getRemoteTenant(client *client.Client, dn string) (*models.Tenant, error) {
 	fvTenant := models.TenantFromContainer(fvTenantCont)
 
 	if fvTenant.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", fvTenant.DistinguishedName)
+		return nil, fmt.Errorf("Tenant %s not found", fvTenant.DistinguishedName)
 	}
 
 	return fvTenant, nil
@@ -209,7 +209,8 @@ func resourceAciTenantRead(d *schema.ResourceData, m interface{}) error {
 	fvTenant, err := getRemoteTenant(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setTenantAttributes(fvTenant, d)
 	return nil

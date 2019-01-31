@@ -113,7 +113,7 @@ func getRemoteL3Outside(client *client.Client, dn string) (*models.L3Outside, er
 	l3extOut := models.L3OutsideFromContainer(l3extOutCont)
 
 	if l3extOut.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", l3extOut.DistinguishedName)
+		return nil, fmt.Errorf("L3Outside %s not found", l3extOut.DistinguishedName)
 	}
 
 	return l3extOut, nil
@@ -338,7 +338,8 @@ func resourceAciL3OutsideRead(d *schema.ResourceData, m interface{}) error {
 	l3extOut, err := getRemoteL3Outside(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setL3OutsideAttributes(l3extOut, d)
 	return nil

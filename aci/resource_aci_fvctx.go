@@ -186,7 +186,7 @@ func getRemoteVRF(client *client.Client, dn string) (*models.VRF, error) {
 	fvCtx := models.VRFFromContainer(fvCtxCont)
 
 	if fvCtx.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", fvCtx.DistinguishedName)
+		return nil, fmt.Errorf("VRF %s not found", fvCtx.DistinguishedName)
 	}
 
 	return fvCtx, nil
@@ -540,7 +540,8 @@ func resourceAciVRFRead(d *schema.ResourceData, m interface{}) error {
 	fvCtx, err := getRemoteVRF(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setVRFAttributes(fvCtx, d)
 	return nil

@@ -70,7 +70,7 @@ func getRemoteApplicationProfile(client *client.Client, dn string) (*models.Appl
 	fvAp := models.ApplicationProfileFromContainer(fvApCont)
 
 	if fvAp.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", fvAp.DistinguishedName)
+		return nil, fmt.Errorf("ApplicationProfile %s not found", fvAp.DistinguishedName)
 	}
 
 	return fvAp, nil
@@ -195,7 +195,8 @@ func resourceAciApplicationProfileRead(d *schema.ResourceData, m interface{}) er
 	fvAp, err := getRemoteApplicationProfile(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setApplicationProfileAttributes(fvAp, d)
 	return nil

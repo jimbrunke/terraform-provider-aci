@@ -84,7 +84,7 @@ func getRemoteContract(client *client.Client, dn string) (*models.Contract, erro
 	vzBrCP := models.ContractFromContainer(vzBrCPCont)
 
 	if vzBrCP.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", vzBrCP.DistinguishedName)
+		return nil, fmt.Errorf("Contract %s not found", vzBrCP.DistinguishedName)
 	}
 
 	return vzBrCP, nil
@@ -223,7 +223,8 @@ func resourceAciContractRead(d *schema.ResourceData, m interface{}) error {
 	vzBrCP, err := getRemoteContract(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setContractAttributes(vzBrCP, d)
 	return nil

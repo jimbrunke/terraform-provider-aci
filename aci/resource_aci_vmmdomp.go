@@ -241,7 +241,7 @@ func getRemoteVMMDomain(client *client.Client, dn string) (*models.VMMDomain, er
 	vmmDomP := models.VMMDomainFromContainer(vmmDomPCont)
 
 	if vmmDomP.DistinguishedName == "" {
-		return nil, fmt.Errorf("Bridge Domain %s not found", vmmDomP.DistinguishedName)
+		return nil, fmt.Errorf("VMMDomain %s not found", vmmDomP.DistinguishedName)
 	}
 
 	return vmmDomP, nil
@@ -659,7 +659,8 @@ func resourceAciVMMDomainRead(d *schema.ResourceData, m interface{}) error {
 	vmmDomP, err := getRemoteVMMDomain(aciClient, dn)
 
 	if err != nil {
-		return err
+		d.SetId("")
+		return nil
 	}
 	setVMMDomainAttributes(vmmDomP, d)
 	return nil
