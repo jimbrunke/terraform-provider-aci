@@ -6,7 +6,7 @@ provider "aci" {
 }
 
 resource "aci_tenant" "test" {
-  name = "1234"
+  #name = "1234"
 }
 
 # resource "aci_app_profile" "testap" {}

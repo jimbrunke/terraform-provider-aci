@@ -3,6 +3,7 @@ package aci
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/ciscoecosystem/aci-go-client/container"
 )
@@ -47,9 +48,17 @@ func preparePayload(className string, inputMap map[string]string) (*container.Co
 }
 
 func GetMOName(dn string) string {
-	re := regexp.MustCompile(".*/\\S+-(\\S+.*)$")
-	match := re.FindStringSubmatch(dn)
-	return match[1]
+	arr := strings.Split(dn, "/")
+	// Get the last element
+	last_ele := arr[len(arr)-1]
+	// split on -
+	dash_split := strings.Split(last_ele, "-")
+	// join except first element as that will be rn
+	return strings.Join(dash_split[1:], "-")
+
+	// re := regexp.MustCompile(".*/\\S+-(\\S+.*)$")
+	// match := re.FindStringSubmatch(dn)
+	// return match[1]
 
 }
 
