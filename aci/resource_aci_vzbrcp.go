@@ -75,7 +75,6 @@ func resourceAciContract() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteContract(client *client.Client, dn string) (*models.Contract, error) {
 	vzBrCPCont, err := client.Get(dn)
 	if err != nil {
@@ -94,6 +93,7 @@ func getRemoteContract(client *client.Client, dn string) (*models.Contract, erro
 func setContractAttributes(vzBrCP *models.Contract, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(vzBrCP.DistinguishedName)
 	d.Set("description", vzBrCP.Description)
+	d.Set("name", GetMOName(vzBrCP.DistinguishedName))
 	d.Set("tenant_dn", GetParentDn(vzBrCP.DistinguishedName))
 	vzBrCPMap, _ := vzBrCP.ToMap()
 

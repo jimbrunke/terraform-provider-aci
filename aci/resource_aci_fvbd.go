@@ -273,7 +273,6 @@ func resourceAciBridgeDomain() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteBridgeDomain(client *client.Client, dn string) (*models.BridgeDomain, error) {
 	fvBDCont, err := client.Get(dn)
 	if err != nil {
@@ -292,6 +291,7 @@ func getRemoteBridgeDomain(client *client.Client, dn string) (*models.BridgeDoma
 func setBridgeDomainAttributes(fvBD *models.BridgeDomain, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(fvBD.DistinguishedName)
 	d.Set("description", fvBD.Description)
+	d.Set("name", GetMOName(fvBD.DistinguishedName))
 	d.Set("tenant_dn", GetParentDn(fvBD.DistinguishedName))
 	fvBDMap, _ := fvBD.ToMap()
 

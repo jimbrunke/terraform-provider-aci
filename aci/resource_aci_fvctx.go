@@ -177,7 +177,6 @@ func resourceAciVRF() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteVRF(client *client.Client, dn string) (*models.VRF, error) {
 	fvCtxCont, err := client.Get(dn)
 	if err != nil {
@@ -196,6 +195,7 @@ func getRemoteVRF(client *client.Client, dn string) (*models.VRF, error) {
 func setVRFAttributes(fvCtx *models.VRF, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(fvCtx.DistinguishedName)
 	d.Set("description", fvCtx.Description)
+	d.Set("name", GetMOName(fvCtx.DistinguishedName))
 	d.Set("tenant_dn", GetParentDn(fvCtx.DistinguishedName))
 	fvCtxMap, _ := fvCtx.ToMap()
 

@@ -138,7 +138,6 @@ func resourceAciFilterEntry() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteFilterEntry(client *client.Client, dn string) (*models.FilterEntry, error) {
 	vzEntryCont, err := client.Get(dn)
 	if err != nil {
@@ -157,6 +156,7 @@ func getRemoteFilterEntry(client *client.Client, dn string) (*models.FilterEntry
 func setFilterEntryAttributes(vzEntry *models.FilterEntry, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(vzEntry.DistinguishedName)
 	d.Set("description", vzEntry.Description)
+	d.Set("name", GetMOName(vzEntry.DistinguishedName))
 	d.Set("filter_dn", GetParentDn(vzEntry.DistinguishedName))
 	vzEntryMap, _ := vzEntry.ToMap()
 

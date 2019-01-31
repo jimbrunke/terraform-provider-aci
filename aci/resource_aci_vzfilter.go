@@ -66,7 +66,6 @@ func resourceAciFilter() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteFilter(client *client.Client, dn string) (*models.Filter, error) {
 	vzFilterCont, err := client.Get(dn)
 	if err != nil {
@@ -85,6 +84,7 @@ func getRemoteFilter(client *client.Client, dn string) (*models.Filter, error) {
 func setFilterAttributes(vzFilter *models.Filter, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(vzFilter.DistinguishedName)
 	d.Set("description", vzFilter.Description)
+	d.Set("name", GetMOName(vzFilter.DistinguishedName))
 	d.Set("tenant_dn", GetParentDn(vzFilter.DistinguishedName))
 	vzFilterMap, _ := vzFilter.ToMap()
 

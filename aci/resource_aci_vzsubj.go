@@ -102,7 +102,6 @@ func resourceAciContractSubject() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteContractSubject(client *client.Client, dn string) (*models.ContractSubject, error) {
 	vzSubjCont, err := client.Get(dn)
 	if err != nil {
@@ -121,6 +120,7 @@ func getRemoteContractSubject(client *client.Client, dn string) (*models.Contrac
 func setContractSubjectAttributes(vzSubj *models.ContractSubject, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(vzSubj.DistinguishedName)
 	d.Set("description", vzSubj.Description)
+	d.Set("name", GetMOName(vzSubj.DistinguishedName))
 	d.Set("contract_dn", GetParentDn(vzSubj.DistinguishedName))
 	vzSubjMap, _ := vzSubj.ToMap()
 

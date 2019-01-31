@@ -232,7 +232,6 @@ func resourceAciVMMDomain() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteVMMDomain(client *client.Client, dn string) (*models.VMMDomain, error) {
 	vmmDomPCont, err := client.Get(dn)
 	if err != nil {
@@ -251,6 +250,7 @@ func getRemoteVMMDomain(client *client.Client, dn string) (*models.VMMDomain, er
 func setVMMDomainAttributes(vmmDomP *models.VMMDomain, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(vmmDomP.DistinguishedName)
 	d.Set("description", vmmDomP.Description)
+	d.Set("name", GetMOName(vmmDomP.DistinguishedName))
 	d.Set("provider_profile_dn", GetParentDn(vmmDomP.DistinguishedName))
 	vmmDomPMap, _ := vmmDomP.ToMap()
 

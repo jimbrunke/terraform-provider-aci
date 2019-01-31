@@ -232,7 +232,6 @@ func resourceAciApplicationEPG() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteApplicationEPG(client *client.Client, dn string) (*models.ApplicationEPG, error) {
 	fvAEPgCont, err := client.Get(dn)
 	if err != nil {
@@ -251,6 +250,7 @@ func getRemoteApplicationEPG(client *client.Client, dn string) (*models.Applicat
 func setApplicationEPGAttributes(fvAEPg *models.ApplicationEPG, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(fvAEPg.DistinguishedName)
 	d.Set("description", fvAEPg.Description)
+	d.Set("name", GetMOName(fvAEPg.DistinguishedName))
 	d.Set("application_profile_dn", GetParentDn(fvAEPg.DistinguishedName))
 	fvAEPgMap, _ := fvAEPg.ToMap()
 

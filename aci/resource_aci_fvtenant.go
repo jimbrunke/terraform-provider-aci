@@ -57,7 +57,6 @@ func resourceAciTenant() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteTenant(client *client.Client, dn string) (*models.Tenant, error) {
 	fvTenantCont, err := client.Get(dn)
 	if err != nil {
@@ -76,6 +75,7 @@ func getRemoteTenant(client *client.Client, dn string) (*models.Tenant, error) {
 func setTenantAttributes(fvTenant *models.Tenant, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(fvTenant.DistinguishedName)
 	d.Set("description", fvTenant.Description)
+	d.Set("name", GetMOName(fvTenant.DistinguishedName))
 	fvTenantMap, _ := fvTenant.ToMap()
 
 	d.Set("annotation", fvTenantMap["annotation"])

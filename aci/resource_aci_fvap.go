@@ -61,7 +61,6 @@ func resourceAciApplicationProfile() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteApplicationProfile(client *client.Client, dn string) (*models.ApplicationProfile, error) {
 	fvApCont, err := client.Get(dn)
 	if err != nil {
@@ -80,6 +79,7 @@ func getRemoteApplicationProfile(client *client.Client, dn string) (*models.Appl
 func setApplicationProfileAttributes(fvAp *models.ApplicationProfile, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(fvAp.DistinguishedName)
 	d.Set("description", fvAp.Description)
+	d.Set("name", GetMOName(fvAp.DistinguishedName))
 	d.Set("tenant_dn", GetParentDn(fvAp.DistinguishedName))
 	fvApMap, _ := fvAp.ToMap()
 

@@ -95,7 +95,6 @@ func resourceAciSubnet() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteSubnet(client *client.Client, dn string) (*models.Subnet, error) {
 	fvSubnetCont, err := client.Get(dn)
 	if err != nil {
@@ -114,6 +113,7 @@ func getRemoteSubnet(client *client.Client, dn string) (*models.Subnet, error) {
 func setSubnetAttributes(fvSubnet *models.Subnet, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(fvSubnet.DistinguishedName)
 	d.Set("description", fvSubnet.Description)
+	d.Set("name", GetMOName(fvSubnet.DistinguishedName))
 	d.Set("bridge_domain_dn", GetParentDn(fvSubnet.DistinguishedName))
 	fvSubnetMap, _ := fvSubnet.ToMap()
 

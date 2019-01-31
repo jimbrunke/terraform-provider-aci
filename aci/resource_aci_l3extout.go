@@ -104,7 +104,6 @@ func resourceAciL3Outside() *schema.Resource {
 		}),
 	}
 }
-
 func getRemoteL3Outside(client *client.Client, dn string) (*models.L3Outside, error) {
 	l3extOutCont, err := client.Get(dn)
 	if err != nil {
@@ -123,6 +122,7 @@ func getRemoteL3Outside(client *client.Client, dn string) (*models.L3Outside, er
 func setL3OutsideAttributes(l3extOut *models.L3Outside, d *schema.ResourceData) *schema.ResourceData {
 	d.SetId(l3extOut.DistinguishedName)
 	d.Set("description", l3extOut.Description)
+	d.Set("name", GetMOName(l3extOut.DistinguishedName))
 	d.Set("tenant_dn", GetParentDn(l3extOut.DistinguishedName))
 	l3extOutMap, _ := l3extOut.ToMap()
 
